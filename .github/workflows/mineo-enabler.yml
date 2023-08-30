@@ -2,7 +2,7 @@ name: mineo-enabler
 
 on:
   schedule:
-    - cron: "0 4 * * 1-5" #JST 13:00
+    - cron: "30 3 * * 1-5" #JST 12:30
   workflow_dispatch:
 
 jobs:
