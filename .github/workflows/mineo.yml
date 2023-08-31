@@ -30,7 +30,7 @@ jobs:
           TARGET_REPOSITORY: selenium-mineo
         run: |
           gh api -H "Accept: application/vnd.github.raw" /repos/$GITHUB_REPOSITORY_OWNER/$TARGET_REPOSITORY/contents/selenium-mineo.py > ./selenium-mineo.py
-          gh api -H "Accept: application/vnd.github.raw" /repos/$GITHUB_REPOSITORY_OWNER/$TARGET_REPOSITORY/contents/google-chrome.tbz > ./google-chrome.tbz
+          gh api -H "Accept: application/vnd.github.raw" /repos/$GITHUB_REPOSITORY_OWNER/$TARGET_REPOSITORY/contents/google-chrome.txz > ./google-chrome.txz
 
       - name: Install Package
         run: |
@@ -54,9 +54,9 @@ jobs:
 
       - name: unpack profile
         run: |
-          tar xf ./google-chrome.tbz
-          cp -a ./google-chrome ./google-chrome2
-          mv ./google-chrome ./google-chrome1
+          mkdir -p ./google-chrome1/Default ./google-chrome2/Default
+          tar xf ./google-chrome.txz -C ./google-chrome1/Default
+          cp -a ./google-chrome1 ./google-chrome2
 
       - name: Run Selenium mineo
         env:
