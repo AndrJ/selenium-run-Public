@@ -54,7 +54,7 @@ jobs:
 
       - name: unpack profile
         run: |
-          mkdir -p ./google-chrome1/Default ./google-chrome2/Default
+          mkdir -p ./google-chrome1/Default
           tar xf ./google-chrome.txz -C ./google-chrome1/Default
           cp -a ./google-chrome1 ./google-chrome2
 
