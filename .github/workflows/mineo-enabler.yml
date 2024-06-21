@@ -13,7 +13,12 @@ jobs:
       actions: write
 
     steps:
-      - name: Enable workflow
+      - name: Disable / Enable workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow enable "mineo" -R "$GITHUB_REPOSITORY"
+        run: |
+          gh workflow enable "mineo" -R "$GITHUB_REPOSITORY"
+
+          # In a public repository, scheduled workflows are automatically disabled when no repository activity has occurred in 60 days.
+          gh workflow disable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
+          gh workflow enable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
