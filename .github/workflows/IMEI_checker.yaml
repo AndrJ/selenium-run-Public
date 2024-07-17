@@ -1,4 +1,4 @@
-name: mineo
+name: IMEI_checker
 
 on:
   schedule:
