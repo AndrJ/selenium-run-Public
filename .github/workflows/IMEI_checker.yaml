@@ -2,7 +2,7 @@ name: IMEI_checker
 
 on:
   schedule:
-    - cron: "30 2 * * *" #JST 11:30
+    - cron: "0 2 * * *" #JST 11:00
   workflow_dispatch:
 
 jobs:
@@ -65,8 +65,7 @@ jobs:
 
           driver.quit()
 
-          with open('$GITHUB_STEP_SUMMARY', "r", encoding='UTF-8') as f:
-          	print(f.read())
+          print('$GITHUB_STEP_SUMMARY')
 
 
       - name: output
