@@ -34,11 +34,9 @@ jobs:
       - name: Run Selenium
         shell: python
         run: |
-          import os
-          
           from selenium import webdriver
           from selenium.webdriver.common.by import By
-          
+
           options = webdriver.ChromeOptions()
           options.add_argument('--headless=new')
           options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36')
@@ -51,13 +49,13 @@ jobs:
           options.add_experimental_option("excludeSwitches", ['enable-automation'])
           driver = webdriver.Chrome(options=options)
           driver.implicitly_wait(10)
-          
+
           driver.get('${{ secrets.IMEI_CHECKER_URI }}')
           #driver.get('https://ct99.my.softbank.jp/WBF/icv?imei=000000000000000')
           driver.find_element(By.NAME, "ACT_TE001").click()
-          with open(os.getenv('GITHUB_STEP_SUMMARY'), "w") as o:
-          	print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML'), file=o)
-          	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2)").get_attribute('outerHTML'), file=o)
+          with open('$GITHUB_STEP_SUMMARY', "w") as o:
+          	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML'), file=o)
+          	print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2)").get_attribute('outerHTML'), file=o)
           driver.quit()
 
       - name: kill VPN
