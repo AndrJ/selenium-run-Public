@@ -13,10 +13,6 @@ jobs:
       actions: write
 
     steps:
-      - name: output
-        shell: python
-        run: print("${{ env.GITHUB_STEP_SUMMARY }}")
-
       - uses: actions/setup-python@main
         with:
           python-version: "*"
@@ -38,6 +34,8 @@ jobs:
       - name: Run Selenium
         shell: python
         run: |
+          import os
+
           from selenium import webdriver
           from selenium.webdriver.common.by import By
 
@@ -59,17 +57,13 @@ jobs:
           driver.find_element(By.NAME, "ACT_TE001").click()
 
           result = driver.find_element(By.XPATH, "/html/body/div[1]/table[2]/tbody/tr[2]/td/font").get_attribute('innerHTML')
-          output = f'Result: {result}\n{driver.find_element(By.XPATH, "/html/body/div[1]/table[2]/tbody/tr[12]/td/font").get_attribute('innerHTML')}'
-          print(output)
-          with open('$GITHUB_STEP_SUMMARY', 'a') as o:
+          with open(os.getenv('GITHUB_STEP_SUMMARY'), 'a') as o:
           	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML').replace("<", "&lt;"), file=o)
-          	o.write(output)
+          	o.write(f'Result: {result}\n{driver.find_element(By.XPATH, "/html/body/div[1]/table[2]/tbody/tr[12]/td/font").get_attribute('innerHTML')}')
           if '▲' != result:
           	raise ValueError("result not ▲")
 
           driver.quit()
-
-          print('$GITHUB_STEP_SUMMARY')
 
       - name: kill VPN
         if: always()
