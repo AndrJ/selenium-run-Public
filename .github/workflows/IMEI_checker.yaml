@@ -65,7 +65,7 @@ jobs:
 
           driver.quit()
 
-          with open('$GITHUB_STEP_SUMMARY', "r", encoding='UTF-8') as o:
+          with open('$GITHUB_STEP_SUMMARY', "r", encoding='UTF-8') as f:
           	print(f.read())
 
 
