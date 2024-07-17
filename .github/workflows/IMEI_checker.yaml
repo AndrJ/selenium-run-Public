@@ -20,6 +20,17 @@ jobs:
       - name: Install Package
         run: pip install selenium
 
+      - name: Install Open VPN
+        run: sudo apt update; sudo apt install -y openvpn
+
+      - name: Get setting file - 日本サーバーの中で1番スコアの高いサーバーを使用
+        run: curl -sS "https://www.vpngate.net/api/iphone/" | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
+
+      - name: Connect VPN
+        run: |
+          sudo openvpn --daemon --config ./vpngate.ovpn
+          sleep 5
+
       - name: Run Selenium
         shell: python
         run: |
@@ -48,6 +59,10 @@ jobs:
           	print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML'), file=o)
           	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2)").get_attribute('outerHTML'), file=o)
           driver.quit()
+
+      - name: kill VPN
+        if: always()
+        run: sudo killall openvpn
 
       - name: Disable workflow
         env:
