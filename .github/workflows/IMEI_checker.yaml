@@ -53,13 +53,15 @@ jobs:
           driver.get('${{ secrets.IMEI_CHECKER_URI }}')
           #driver.get('https://ct99.my.softbank.jp/WBF/icv?imei=000000000000000')
           driver.find_element(By.NAME, "ACT_TE001").click()
+
           result = driver.find_element(By.XPATH, "/html/body/div[1]/table[2]/tbody/tr[2]/td/font").get_attribute('innerHTML')
           print(result)
           with open('$GITHUB_STEP_SUMMARY', "w") as o:
           	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML').replace("<", "&lt;"), file=o)
-          	o.write(result)
+          	o.write(f'Result: {result}')
           if '▲' != result:
           	raise ValueError("result not ▲")
+
           driver.quit()
 
       - name: kill VPN
