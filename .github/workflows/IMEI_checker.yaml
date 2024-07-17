@@ -55,10 +55,11 @@ jobs:
           driver.find_element(By.NAME, "ACT_TE001").click()
 
           result = driver.find_element(By.XPATH, "/html/body/div[1]/table[2]/tbody/tr[2]/td/font").get_attribute('innerHTML')
-          print(result)
+          output = f'Result: {result}'
+          print(output)
           with open('$GITHUB_STEP_SUMMARY', "w") as o:
           	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML').replace("<", "&lt;"), file=o)
-          	o.write(f'Result: {result}')
+          	o.write(output)
           if '▲' != result:
           	raise ValueError("result not ▲")
 
