@@ -55,7 +55,8 @@ jobs:
           driver.find_element(By.NAME, "ACT_TE001").click()
           #with open('$GITHUB_STEP_SUMMARY', "w") as o:
           	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML').replace("<", "&lt;"), file=o)
-          print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1)").get_attribute('outerHTML').replace("<", "&lt;"), file=o)
+          	print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1)").get_attribute('innerHTML').replace("<", "&lt;"), file=o)
+          print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1)").get_attribute('innerHTML').replace("<", "&lt;"))
           driver.quit()
 
       - name: kill VPN
