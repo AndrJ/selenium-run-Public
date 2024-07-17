@@ -13,6 +13,10 @@ jobs:
       actions: write
 
     steps:
+      - name: output
+        shell: python
+        run: print("${{ GITHUB_STEP_SUMMARY }}")
+
       - uses: actions/setup-python@main
         with:
           python-version: "*"
@@ -66,10 +70,6 @@ jobs:
           driver.quit()
 
           print('$GITHUB_STEP_SUMMARY')
-
-
-      - name: output
-        run: cat $GITHUB_STEP_SUMMARY
 
       - name: kill VPN
         if: always()
