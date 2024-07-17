@@ -26,7 +26,7 @@ jobs:
       - name: Get setting file - 日本サーバーの中で1番スコアの高いサーバーを使用
         run: curl -sS "https://www.vpngate.net/api/iphone/" | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
 
-      # ct99.my.softbank.jp は日本以外からアクセスできない？っぽい
+      # SoftBankのIMEI確認サイトは日本以外からアクセスできない？っぽい
       - name: Connect VPN
         run: |
           sudo openvpn --daemon --config ./vpngate.ovpn
@@ -54,7 +54,6 @@ jobs:
           driver.implicitly_wait(10)
 
           driver.get('${{ secrets.IMEI_CHECKER_URI }}')
-          #driver.get('https://ct99.my.softbank.jp/WBF/icv?imei=000000000000000')
           driver.find_element(By.NAME, "ACT_TE001").click()
 
           result = driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[2]/td/font').get_attribute('innerHTML')
