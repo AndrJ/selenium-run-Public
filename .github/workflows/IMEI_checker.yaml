@@ -1,0 +1,59 @@
+name: mineo
+
+on:
+  schedule:
+    - cron: "30 2 * * *" #JST 11:30
+  workflow_dispatch:
+
+jobs:
+  selenium:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+
+    steps:
+      - uses: actions/setup-python@main
+        with:
+          python-version: "*"
+
+      - name: Install Package
+        run: pip install selenium
+
+      - name: Run Selenium
+        env:
+          uri: ${{ secrets.URI }}
+        shell: python
+        run: |
+          import os
+          
+          from selenium import webdriver
+          from selenium.webdriver.common.by import By
+          
+          options = webdriver.ChromeOptions()
+          options.add_argument('--headless=new')
+          options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36')
+          options.add_argument('--no-sandbox')
+          options.add_argument('--start-maximized')
+          options.add_argument('--disable-dev-shm-usage')
+          options.add_argument('--disable-blink-features=AutomationControlled')
+          options.add_argument('--disable-extensions')
+          options.add_argument('--blink-settings=imagesEnabled=false')
+          options.add_experimental_option("excludeSwitches", ['enable-automation'])
+          driver = webdriver.Chrome(options=options)
+          driver.implicitly_wait(10)
+          
+          driver.get(os.getenv('uri'))
+          driver.find_element(By.NAME, "ACT_TE001").click()
+          with open(os.getenv('GITHUB_STEP_SUMMARY'), "w") as o:
+          	print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML'), file=o)
+          	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2)").get_attribute('outerHTML'), file=o)
+          driver.quit()
+
+      - name: Disable workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow disable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
+          sleep 3
+          gh workflow enable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
