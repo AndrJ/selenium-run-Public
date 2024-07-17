@@ -21,4 +21,5 @@ jobs:
 
           # In a public repository, scheduled workflows are automatically disabled when no repository activity has occurred in 60 days.
           gh workflow disable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
+          sleep 3
           gh workflow enable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
