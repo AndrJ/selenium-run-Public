@@ -53,7 +53,7 @@ jobs:
           driver.get('${{ secrets.IMEI_CHECKER_URI }}')
           #driver.get('https://ct99.my.softbank.jp/WBF/icv?imei=000000000000000')
           driver.find_element(By.NAME, "ACT_TE001").click()
-          with open('$GITHUB_STEP_SUMMARY', "w") as o:
+          with open('${{ GITHUB_STEP_SUMMARY }}', "w") as o:
           	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML'), file=o)
           	print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2)").get_attribute('outerHTML'), file=o)
           driver.quit()
