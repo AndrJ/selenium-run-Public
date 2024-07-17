@@ -55,7 +55,7 @@ jobs:
           driver.find_element(By.NAME, "ACT_TE001").click()
 
           result = driver.find_element(By.XPATH, "/html/body/div[1]/table[2]/tbody/tr[2]/td/font").get_attribute('innerHTML')
-          output = f'Result: {result}'
+          output = f'Result: {result}\n{driver.find_element(By.XPATH, "/html/body/div[1]/table[2]/tbody/tr[12]/td/font").get_attribute('innerHTML')}'
           print(output)
           with open('$GITHUB_STEP_SUMMARY', "a") as o:
           	#print(driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(1) > table:nth-child(2)").get_attribute('outerHTML').replace("<", "&lt;"), file=o)
