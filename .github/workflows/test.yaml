@@ -17,4 +17,4 @@ jobs:
         run: |
           import os
 
-          print(os.system('google-chrome --version | grep -E "[0-9]+"'))
+          print(os.system("google-chrome --version | grep -E '[0-9]+'"))
