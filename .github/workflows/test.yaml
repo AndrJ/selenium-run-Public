@@ -19,3 +19,4 @@ jobs:
 
           print(os.popen("google-chrome --version | sed -E 's/.+ ([0-9]+).*/\1/'").read())
           print(os.popen("google-chrome --version").read())
+          print(os.popen("google-chrome --version | grep -oE '[0-9]+' | head -n1").read())
