@@ -17,4 +17,4 @@ jobs:
         run: |
           import os
 
-          print(os.popen("google-chrome --version | grep -E '[0-9]*'").read())
+          print(os.popen("google-chrome --version | sed -E '/([0-9]+)/\1/'").read())
