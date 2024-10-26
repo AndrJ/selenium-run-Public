@@ -18,3 +18,4 @@ jobs:
           import os
 
           print(os.popen("google-chrome --version | sed -E 's/.+ ([0-9]+).*/\1/'").read())
+          print(os.popen("google-chrome --version").read())
