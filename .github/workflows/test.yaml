@@ -1,0 +1,20 @@
+name: test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  selenium:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-python@main
+        with:
+          python-version: "*"
+
+      - name: Run Selenium
+        shell: python
+        run: |
+          import os
+
+          print(os.system('google-chrome --version | grep -E "[0-9]+"'))
