@@ -48,6 +48,7 @@ jobs:
             with open(os.getenv('GITHUB_STEP_SUMMARY'), 'a') as o:
               #print(driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(1) > table:nth-child(2)').get_attribute('outerHTML').replace('<', '&lt;'), file=o)
               o.write(f'Result: {result}\n{driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[12]/td/font').get_attribute('innerHTML')}')
+            return result
 
           browserMajorVersion = os.popen('google-chrome --version').read().split()[2].split('.')[0]
 
