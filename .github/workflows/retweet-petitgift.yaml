@@ -88,7 +88,7 @@ jobs:
               password = driver.find_element(By.NAME, 'password')
 
             except NoSuchElementException:
-              verify_field = driver.find_element(By.CLASS_NAME, value="r-30o5oe")
+              verify_field = driver.find_element(By.NAME, 'text')
               verify_field.send_keys('${{ secrets.x_ID }}')
               verify_field.send_keys(Keys.RETURN)
               time.sleep(3)
