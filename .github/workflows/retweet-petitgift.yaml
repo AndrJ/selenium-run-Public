@@ -77,9 +77,33 @@ jobs:
             driver.find_element(By.NAME, 'text').send_keys('${{ secrets.x_ID }}')
             driver.find_element(By.NAME, 'text').send_keys(Keys.RETURN)
             time.sleep(5)
-            driver.find_element(By.NAME, 'password').send_keys('${{ secrets.x_PASSWORD }}')
-            driver.find_element(By.NAME, 'password').send_keys(Keys.RETURN)
-            time.sleep(5)
+
+
+            # Password Field
+            time.sleep(3)
+            # Try loop to catch verification w email
+            try:
+              password = driver.find_element(By.NAME, 'password')
+
+            except NoSuchElementException:
+              verify_field = driver.find_element(By.CLASS_NAME, value="r-30o5oe")
+              verify_field.send_keys('${{ secrets.x_ID }}')
+              verify_field.send_keys(Keys.RETURN)
+              time.sleep(3)
+
+              password = driver.find_element(By.NAME, 'password')
+              time.sleep(2)
+
+            finally:
+              password.send_keys('${{ secrets.x_PASSWORD }}')
+              password.send_keys(Keys.RETURN)
+
+              time.sleep(7)
+
+            
+            #driver.find_element(By.NAME, 'password').send_keys('${{ secrets.x_PASSWORD }}')
+            #driver.find_element(By.NAME, 'password').send_keys(Keys.RETURN)
+            #time.sleep(5)
 
             max_retries = 5
             for attempt in range(max_retries):
