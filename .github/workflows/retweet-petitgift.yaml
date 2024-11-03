@@ -1,0 +1,105 @@
+name: retweet-petitgift_mdp
+
+on:
+  schedule:
+    - cron: "20 0 * * *" #JST 9:20
+  workflow_dispatch:
+
+jobs:
+  selenium:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+
+    steps:
+      - uses: actions/setup-python@main
+        with:
+          python-version: "*"
+
+      - name: Install Package
+        run: pip install selenium
+
+      - name: Install Open VPN
+        run: sudo apt update; sudo apt install -y openvpn
+
+      - name: Get setting file - 日本サーバーの中で1番スコアの高いサーバーを使用
+        run: curl -sS "https://www.vpngate.net/api/iphone/" | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
+
+      # SoftBankのIMEI確認サイトは日本以外からアクセスできない？っぽい
+      - name: Connect VPN
+        run: |
+          sudo openvpn --daemon --config ./vpngate.ovpn
+          sleep 5
+
+      - name: Run Selenium
+        shell: python
+        run: |
+          import os
+          import time
+
+          from selenium import webdriver
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.common.keys import Keys
+
+          def retweet(driver):
+            # X(旧Twitter)にログイン
+            driver.get('https://x.com/login')
+            time.sleep(3)
+            driver.find_element(By.NAME, 'text').send_keys('${{ secrets.ID }}' + Keys.RETURN)
+            time.sleep(2)
+            driver.find_element(By.NAME, 'password').send_keys('${{ secrets.PASSWORD }}' + Keys.RETURN)
+            time.sleep(5)
+
+            # 指定したURLにアクセス
+            driver.get('https://x.com/petitgift_mdp')
+            time.sleep(5)
+
+            # 最新の特定の投稿をリポスト
+            latest_post = driver.find_element(By.XPATH, "(//div[@data-testid='tweet']//span[contains(text(), '#コンビニ 商品が当たる')])[1]")
+            # リポストボタンをクリックする
+            latest_post.find_element(By.XPATH, ".//div[@data-testid='retweet']").click()
+            time.sleep(2)
+            # リポスト確認ボタンをクリックする
+            driver.find_element(By.XPATH, "//div[@data-testid='retweetConfirm']").click()
+            time.sleep(2)
+
+          browserMajorVersion = os.popen('google-chrome --version').read().split()[2].split('.')[0]
+
+          options = webdriver.ChromeOptions()
+          options.add_argument('--headless=new')
+          options.add_argument(f'--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{browserMajorVersion}.0.0.0 Safari/537.36')
+          options.add_argument('--no-sandbox')
+          options.add_argument('--start-maximized')
+          options.add_argument('--disable-dev-shm-usage')
+          options.add_argument('--disable-blink-features=AutomationControlled')
+          options.add_argument('--disable-extensions')
+          options.add_argument('--blink-settings=imagesEnabled=false')
+          options.add_experimental_option("excludeSwitches", ['enable-automation'])
+          with webdriver.Chrome(options=options) as driver:
+            driver.implicitly_wait(10)
+
+            max_retries = 5
+            for attempt in range(max_retries):
+              try:
+                retweet(driver)
+                break
+              except Exception as e:
+                if attempt < max_retries - 1:
+                  #time.sleep(2)
+                  pass
+                else:
+                  raise
+
+      - name: kill VPN
+        if: always()
+        run: sudo killall openvpn
+
+      # In a public repository, scheduled workflows are automatically disabled when no repository activity has occurred in 60 days.
+      - name: Disable / Enable workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow disable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
+          sleep 3
+          gh workflow enable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
