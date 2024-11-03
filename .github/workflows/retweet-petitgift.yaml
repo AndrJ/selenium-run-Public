@@ -79,6 +79,7 @@ jobs:
             time.sleep(5)
 
 
+            password = None
             # Password Field
             time.sleep(3)
             # Try loop to catch verification w email
