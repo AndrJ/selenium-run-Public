@@ -82,6 +82,7 @@ jobs:
             # Password Field
             time.sleep(3)
             # Try loop to catch verification w email
+            from selenium.common.exceptions import NoSuchElementException
             try:
               password = driver.find_element(By.NAME, 'password')
 
