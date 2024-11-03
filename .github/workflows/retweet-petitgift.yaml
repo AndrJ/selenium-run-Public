@@ -74,9 +74,11 @@ jobs:
             # X(旧Twitter)にログイン
             driver.get('https://x.com/login')
             time.sleep(5)
-            driver.find_element(By.NAME, 'text').send_keys('${{ secrets.x_ID }}').send_keys(Keys.RETURN)
+            driver.find_element(By.NAME, 'text').send_keys('${{ secrets.x_ID }}')
+            driver.find_element(By.NAME, 'text').send_keys(Keys.RETURN)
             time.sleep(5)
-            driver.find_element(By.NAME, 'password').send_keys('${{ secrets.x_PASSWORD }}').send_keys(Keys.RETURN)
+            driver.find_element(By.NAME, 'password').send_keys('${{ secrets.x_PASSWORD }}')
+            driver.find_element(By.NAME, 'password').send_keys(Keys.RETURN)
             time.sleep(5)
 
             max_retries = 5
