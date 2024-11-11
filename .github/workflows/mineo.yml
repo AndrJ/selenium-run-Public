@@ -58,16 +58,16 @@ jobs:
           mkdir -p ./google-chrome1/Default
           tar xf ./google-chrome.txz -C ./google-chrome1/Default
           cp -a ./google-chrome1 ./google-chrome2
-          cp -a ./google-chrome1 ./google-chrome3
+          #cp -a ./google-chrome1 ./google-chrome3
 
       - name: Run Selenium mineo
         env:
-          id1: ${{ secrets.ID1 }}
-          pass1: ${{ secrets.PASS1 }}
-          id2: ${{ secrets.ID2 }}
-          pass2: ${{ secrets.PASS2 }}
-          id3: ${{ secrets.ID3 }}
-          pass3: ${{ secrets.PASS3 }}
+          #id1: ${{ secrets.ID1 }}
+          #pass1: ${{ secrets.PASS1 }}
+          id1: ${{ secrets.ID2 }}
+          pass1: ${{ secrets.PASS2 }}
+          id2: ${{ secrets.ID3 }}
+          pass2: ${{ secrets.PASS3 }}
         run: |
           python ./selenium-mineo.py 2>&1 | tee -a $GITHUB_STEP_SUMMARY
           exit ${PIPESTATUS[0]}
