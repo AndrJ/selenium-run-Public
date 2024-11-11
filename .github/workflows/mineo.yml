@@ -8,7 +8,7 @@ on:
 jobs:
   selenium:
     env:
-      UseVPN: true
+      UseVPN: false
 
     runs-on: ubuntu-latest
 
