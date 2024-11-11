@@ -42,15 +42,15 @@ jobs:
           pip install selenium
 
       - name: Install Open VPN
-        if: env.UseVPN
+        if: ${{ env.UseVPN }}
         run: sudo apt update; sudo apt install -y openvpn
 
       - name: Get setting file - 日本サーバーの中で1番スコアの高いサーバーを使用
-        if: env.UseVPN
+        if: ${{ env.UseVPN }}
         run: curl -sS "https://www.vpngate.net/api/iphone/" | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
 
       - name: Connect VPN
-        if: env.UseVPN
+        if: ${{ env.UseVPN }}
         run: |
           sudo openvpn --daemon --config ./vpngate.ovpn
           sleep 5
@@ -83,7 +83,7 @@ jobs:
         run: rm -fr ./selenium-mineo.py ./google-chrome*
 
       - name: kill VPN
-        if: env.UseVPN && always()
+        if: ${{ env.UseVPN && always() }}
         run: sudo killall openvpn
 
       - name: Disable workflow
