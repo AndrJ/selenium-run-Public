@@ -21,15 +21,21 @@ jobs:
         run: pip install selenium
 
       - name: Install Open VPN
-        run: sudo apt update; sudo apt install -y openvpn
+        #run: sudo apt update; sudo apt install -y openvpn
+        # Ubuntu 24.04 以降はupdate不要
+        run: sudo apt install -y openvpn
 
       - name: Get setting file - 日本サーバーの中で1番スコアの高いサーバーを使用
+      #- name: Get setting file - ad.jp以外の日本サーバーの中で1番スコアの高いサーバーを使用
         run: curl -sS "https://www.vpngate.net/api/iphone/" | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
+        #run: curl -sS "https://www.vpngate.net/api/iphone/" | sed '/^public-vpn-/d' | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
 
       # SoftBankのIMEI確認サイトは日本以外からアクセスできない？っぽい
       - name: Connect VPN
         run: |
-          sudo openvpn --daemon --config ./vpngate.ovpn
+          #sudo openvpn --daemon --config ./vpngate.ovpn
+          # OpenVPN 2.6系になってからOpenSSL 3.0 が使われるようになったようで、幾つかの cipher がデフォルトの設定がつかえなくなった
+          sudo openvpn --data-ciphers AES-128-CBC --daemon --config ./vpngate.ovpn
           sleep 5
 
       - name: Run Selenium
