@@ -51,9 +51,9 @@ jobs:
           options.add_argument('--blink-settings=imagesEnabled=false')
           options.add_experimental_option("excludeSwitches", ['enable-automation'])
           driver = webdriver.Chrome(options=options)
-          driver.implicitly_wait(10)
+          driver.implicitly_wait(15)
 
-          driver.get('${{ secrets.IMEI_CHECKER_URI }}')
+          driver.get('https://www.google.com/')
           driver.find_element(By.NAME, "ACT_TE001").click()
 
           result = driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[2]/td/font').get_attribute('innerHTML')
