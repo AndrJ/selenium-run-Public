@@ -53,7 +53,7 @@ jobs:
           driver = webdriver.Chrome(options=options)
           driver.implicitly_wait(15)
 
-          driver.get('https://www.google.com/')
+          driver.get('https://ct99.my.softbank.jp/WBF/icv?imei=350266801596480')
           driver.find_element(By.NAME, "ACT_TE001").click()
 
           result = driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[2]/td/font').get_attribute('innerHTML')
