@@ -40,21 +40,9 @@ jobs:
           from selenium import webdriver
           from selenium.webdriver.common.by import By
 
-          def check_imei(driver):
-            driver.get('${{ secrets.IMEI_CHECKER_URI }}')
-            driver.find_element(By.NAME, "ACT_TE001").click()
-
-            result = driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[2]/td/font').get_attribute('innerHTML')
-            with open(os.getenv('GITHUB_STEP_SUMMARY'), 'a') as o:
-              #print(driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(1) > table:nth-child(2)').get_attribute('outerHTML').replace('<', '&lt;'), file=o)
-              o.write(f'Result: {result}\n{driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[12]/td/font').get_attribute('innerHTML')}')
-            return result
-
-          browserMajorVersion = os.popen('google-chrome --version').read().split()[2].split('.')[0]
-
           options = webdriver.ChromeOptions()
           options.add_argument('--headless=new')
-          options.add_argument(f'--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{browserMajorVersion}.0.0.0 Safari/537.36')
+          options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36')
           options.add_argument('--no-sandbox')
           options.add_argument('--start-maximized')
           options.add_argument('--disable-dev-shm-usage')
@@ -62,23 +50,20 @@ jobs:
           options.add_argument('--disable-extensions')
           options.add_argument('--blink-settings=imagesEnabled=false')
           options.add_experimental_option("excludeSwitches", ['enable-automation'])
-          with webdriver.Chrome(options=options) as driver:
-            driver.implicitly_wait(10)
+          driver = webdriver.Chrome(options=options)
+          driver.implicitly_wait(10)
 
-            result = None
-            max_retries = 5
-            for attempt in range(max_retries):
-              try:
-                result = check_imei(driver)
-                break
-              except Exception as e:
-                if attempt < max_retries - 1:
-                  #time.sleep(2)
-                  pass
-                else:
-                  raise
-            if '▲' != result:
-              raise ValueError('result not ▲')
+          driver.get('${{ secrets.IMEI_CHECKER_URI }}')
+          driver.find_element(By.NAME, "ACT_TE001").click()
+
+          result = driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[2]/td/font').get_attribute('innerHTML')
+          with open(os.getenv('GITHUB_STEP_SUMMARY'), 'a') as o:
+          	#print(driver.find_element(By.CSS_SELECTOR, 'body > div:nth-child(1) > table:nth-child(2)').get_attribute('outerHTML').replace('<', '&lt;'), file=o)
+          	o.write(f'Result: {result}\n{driver.find_element(By.XPATH, '/html/body/div[1]/table[2]/tbody/tr[12]/td/font').get_attribute('innerHTML')}')
+          if '▲' != result:
+          	raise ValueError('result not ▲')
+
+          driver.quit()
 
       - name: kill VPN
         if: always()
