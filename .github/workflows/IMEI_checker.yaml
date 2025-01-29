@@ -33,7 +33,7 @@ jobs:
         run: |
           #sudo openvpn --daemon --config ./vpngate.ovpn
           # OpenVPN 2.6系になってからOpenSSL 3.0 が使われるようになったようで、幾つかの cipher がデフォルトの設定がつかえなくなった
-          sudo openvpn --data-ciphers AES-128-CBC --config ./vpngate.ovpn
+          sudo openvpn --data-ciphers AES-128-CBC --daemon --config ./vpngate.ovpn
           sleep 5
 
       - name: Run Selenium
