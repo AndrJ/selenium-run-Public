@@ -24,7 +24,7 @@ jobs:
         run: sudo apt update; sudo apt install -y openvpn
 
       - name: Get setting file - 日本サーバーの中で1番スコアの高いサーバーを使用
-        run: curl -sS "https://www.vpngate.net/api/iphone/" | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
+        run: curl -sS "https://www.vpngate.net/api/iphone/" | sed '/^public-vpn-/d' | grep ,JP, | sort -k 3nr -t , | sed -n 1p | cut -d, -f15 | base64 -d 2> /dev/null | tee ./vpngate.ovpn
 
       # SoftBankのIMEI確認サイトは日本以外からアクセスできない？っぽい
       - name: Connect VPN
