@@ -30,7 +30,7 @@ jobs:
       - name: Connect VPN
         run: |
           sudo openvpn --daemon --config ./vpngate.ovpn
-          sleep 5
+          sleep 15
 
       - name: Run Selenium
         shell: python
