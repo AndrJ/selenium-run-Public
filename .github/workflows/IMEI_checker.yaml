@@ -31,7 +31,8 @@ jobs:
       # SoftBankのIMEI確認サイトは日本以外からアクセスできない？っぽい
       - name: Connect VPN
         run: |
-          sudo openvpn --daemon --config ./vpngate.ovpn
+          #sudo openvpn --daemon --config ./vpngate.ovpn
+          sudo openvpn ./vpngate.ovpn
           sleep 5
 
       - name: Run Selenium
