@@ -76,6 +76,8 @@ jobs:
         env:
           id2: ${{ secrets.ID2 }}
           pass2: ${{ secrets.PASS2 }}
+          id3: ${{ secrets.ID3 }}
+          pass3: ${{ secrets.PASS3 }}
         run: |
           python ./selenium-mineo.py 2>&1 | tee -a $GITHUB_STEP_SUMMARY
           exit ${PIPESTATUS[0]}
