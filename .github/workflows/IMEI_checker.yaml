@@ -23,7 +23,7 @@ jobs:
       - name: Install Open VPN
         run: sudo apt update; sudo apt install -y openvpn
         # Ubuntu 24.04 以降はupdate不要
-        run: sudo apt install -y openvpn
+        #run: sudo apt install -y openvpn
 
       - name: Get setting file - 日本サーバーの中で1番スコアの高いサーバーを使用
       #- name: Get setting file - ad.jp以外の日本サーバーの中で1番スコアの高いサーバーを使用
