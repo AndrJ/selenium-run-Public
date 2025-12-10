@@ -21,7 +21,7 @@ jobs:
         run: pip install selenium
 
       - name: Install Open VPN
-        #run: sudo apt update; sudo apt install -y openvpn
+        run: sudo apt update; sudo apt install -y openvpn
         # Ubuntu 24.04 以降はupdate不要
         run: sudo apt install -y openvpn
 
