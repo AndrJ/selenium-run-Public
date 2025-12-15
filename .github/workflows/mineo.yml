@@ -74,6 +74,8 @@ jobs:
 
       - name: Run Selenium mineo
         env:
+          #id1: ${{ secrets.ID1 }}
+          #pass1: ${{ secrets.PASS1 }}
           id2: ${{ secrets.ID2 }}
           pass2: ${{ secrets.PASS2 }}
           id3: ${{ secrets.ID3 }}
