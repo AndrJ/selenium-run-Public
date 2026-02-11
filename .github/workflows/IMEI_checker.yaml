@@ -94,8 +94,8 @@ jobs:
       - name: Disable / Enable workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
         run: |
-          gh repo set-default $GITHUB_REPOSITORY
           gh workflow disable "$GITHUB_WORKFLOW"
           sleep 3
           gh workflow enable "$GITHUB_WORKFLOW"
