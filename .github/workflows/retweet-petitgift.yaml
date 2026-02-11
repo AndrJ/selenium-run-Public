@@ -133,6 +133,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow disable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
+          gh repo set-default $GITHUB_REPOSITORY
+          gh workflow disable "$GITHUB_WORKFLOW"
           sleep 3
-          gh workflow enable "$GITHUB_WORKFLOW" -R "$GITHUB_REPOSITORY"
+          gh workflow enable "$GITHUB_WORKFLOW"
