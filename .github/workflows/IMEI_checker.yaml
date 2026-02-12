@@ -2,7 +2,7 @@ name: IMEI_checker
 
 on:
   schedule:
-    - cron: "17 1 * * *" #JST 10:17
+    - cron: "47 23 * * *" #JST 8:47
   workflow_dispatch:
 
 jobs:
